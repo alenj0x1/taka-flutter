@@ -35,8 +35,15 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: .fromSeed(seedColor: Colors.green),
-        textTheme: const TextTheme(headlineLarge: TextStyle(fontSize: 60)),
+        colorScheme: .fromSeed(
+          seedColor: const Color.fromARGB(255, 224, 186, 116),
+        ),
+        textTheme: TextTheme(
+          headlineLarge: TextStyle(
+            fontSize: 80,
+            color: Theme.of(context).colorScheme.scrim,
+          ),
+        ),
       ),
       home: ChangeNotifierProvider(
         create: (_) => CounterProvider(),
@@ -65,15 +72,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late CounterProvider _counterProvider;
-  @override
-  void initState() {
-    _counterProvider = Provider.of<CounterProvider>(context, listen: false);
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final counterProvider = Provider.of<CounterProvider>(context);
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -111,12 +112,13 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             const Text('You have pushed the button this many times:'),
             Text(
-              '${_counterProvider.counter}',
+              '${counterProvider.counter}',
               style: Theme.of(context).textTheme.headlineLarge,
             ),
+            Padding(padding: const EdgeInsets.only(bottom: 20)),
             Image.network(
-              "https://img-12.stickers.cloud/packs/bf8c16b8-06b8-44f7-9e00-ea44ff16eba8/webp/1723d6b1-5b00-4da4-bb9d-ccf9f1dc7f73.webp",
-              height: 100,
+              "https://data.chpic.su/stickers/l/LINE_NEKOMIMI_MiA/LINE_NEKOMIMI_MiA_095.webp",
+              height: 200,
             ),
           ],
         ),
@@ -128,19 +130,19 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             FloatingActionButton(
               heroTag: 'taka 1',
-              onPressed: _counterProvider.increment,
+              onPressed: counterProvider.increment,
               tooltip: 'Add a taka number',
               child: const Icon(Icons.exposure_plus_1),
             ),
             FloatingActionButton(
               heroTag: 'taka 2',
-              onPressed: _counterProvider.decrement,
+              onPressed: counterProvider.decrement,
               tooltip: 'Substract a taka number',
               child: const Icon(Icons.exposure_minus_1),
             ),
             FloatingActionButton(
               heroTag: 'taka 3',
-              onPressed: _counterProvider.reset,
+              onPressed: counterProvider.reset,
               tooltip: 'Reset a taka number',
               child: const Icon(Icons.exposure),
             ),
@@ -149,16 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (_) => SecondScreen(
-                      counter: _counterProvider.counter,
-                      counterChanged: (value) {
-                        setState(() {
-                          _counterProvider.counter = value;
-                        });
-                      },
-                    ),
-                  ),
+                  MaterialPageRoute(builder: (_) => SecondScreen()),
                 );
               },
               tooltip: 'Reset a taka number',
